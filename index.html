@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            background-image: url('./Images/TCB\ BG.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Enhanced dark overlay with animated gradient */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                rgba(0, 0, 0, 0.7), 
+                rgba(20, 20, 40, 0.6), 
+                rgba(0, 0, 0, 0.7));
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        /* Animated background overlay patterns */
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(119, 198, 255, 0.1) 0%, transparent 50%);
+            animation: backgroundPulse 6s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 50px;
+            opacity: 0;
+            transform: translateY(-30px) rotateY(-15deg);
+            animation: logoEntrance 2s ease-out 0.3s forwards;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: translateY(-5px) rotateY(5deg) scale(1.05);
+            filter: drop-shadow(0 15px 30px rgba(255, 255, 255, 0.2));
+        }
+
+        .coming-soon {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            opacity: 0;
+            color: #fff;
+            animation: textEntrance 2s ease-out 0.8s forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Moving light effect around the text */
+        .coming-soon::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -100%;
+            width: 100%;
+            height: calc(100% + 4px);
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                transparent 30%, 
+                rgba(255, 255, 255, 0.8) 50%,
+                rgba(255, 107, 157, 0.8) 55%,
+                rgba(78, 205, 196, 0.8) 60%,
+                rgba(255, 255, 255, 0.8) 65%,
+                transparent 70%, 
+                transparent 100%);
+            animation: movingLight 3s linear infinite;
+            z-index: 1;
+            border-radius: 4px;
+            filter: blur(1px);
+        }
+
+        /* Second light beam for more dynamic effect */
+        .coming-soon::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -50px;
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%,
+                rgba(255, 255, 255, 0.9) 50%,
+                transparent 100%);
+            animation: lightBeam 4s linear infinite;
+            transform: translateY(-50%);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Individual letter highlighting */
+        .letter {
+            position: relative;
+            display: inline-block;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .letter::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, 
+                rgba(255, 255, 255, 0.1),
+                rgba(255, 107, 157, 0.1),
+                rgba(78, 205, 196, 0.1),
+                rgba(69, 183, 209, 0.1));
+            border-radius: 8px;
+            opacity: 0;
+            z-index: -1;
+            animation: letterGlow 6s ease-in-out infinite;
+            animation-delay: calc(var(--index) * 0.2s);
+        }
+
+        .letter:nth-child(1) { --index: 0; }
+        .letter:nth-child(2) { --index: 1; }
+        .letter:nth-child(3) { --index: 2; }
+        .letter:nth-child(4) { --index: 3; }
+        .letter:nth-child(5) { --index: 4; }
+        .letter:nth-child(6) { --index: 5; }
+        .letter:nth-child(7) { --index: 6; }
+        .letter:nth-child(8) { --index: 7; }
+        .letter:nth-child(9) { --index: 8; }
+        .letter:nth-child(10) { --index: 9; }
+
+        .subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: subtitleEntrance 1.5s ease-out 1.3s forwards,
+                       subtitleFloat 4s ease-in-out 3s infinite;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            margin-bottom: 40px;
+        }
+
+        /* Social Media Section */
+        .social-section {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: socialEntrance 1.8s ease-out 1.8s forwards;
+        }
+
+        .social-text {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1), 
+                rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+            transition: all 0.4s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .social-link:hover::before {
+            width: 100px;
+            height: 100px;
+        }
+
+        .social-link:hover {
+            transform: translateY(-8px) scale(1.1);
+            box-shadow: 0 15px 35px rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .social-link.instagram:hover {
+            background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+            box-shadow: 0 15px 35px rgba(131, 58, 180, 0.4);
+        }
+
+        .social-link.tiktok:hover {
+            background: linear-gradient(135deg, #ff0050, #000000);
+            box-shadow: 0 15px 35px rgba(255, 0, 80, 0.4);
+        }
+
+        .social-link.email:hover {
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            box-shadow: 0 15px 35px rgba(66, 133, 244, 0.4);
+        }
+
+        /* Social Media Icons using CSS */
+        .social-icon {
+            width: 28px;
+            height: 28px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Instagram Icon */
+        .instagram-icon {
+            border: 2px solid currentColor;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .instagram-icon::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 12px;
+            height: 12px;
+            border: 2px solid currentColor;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .instagram-icon::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 4px;
+            height: 4px;
+            background: currentColor;
+            border-radius: 50%;
+        }
+
+        /* TikTok Icon */
+        .tiktok-icon {
+            position: relative;
+            width: 28px;
+            height: 28px;
+        }
+
+        .tiktok-icon::before {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 18px;
+            background: currentColor;
+            border-radius: 25% 25% 25% 25% / 25% 25% 75% 75%;
+            left: 7px;
+            top: 5px;
+            transform: rotate(-15deg);
+        }
+
+        .tiktok-icon::after {
+            content: '';
+            position: absolute;
+            width: 11px;
+            height: 15px;
+            border: 2px solid currentColor;
+            border-radius: 25% 25% 25% 25% / 25% 25% 75% 75%;
+            right: 8px;
+            top: 2px;
+            transform: rotate(15deg);
+            background: transparent;
+        }
+
+        /* Email Icon */
+        .email-icon {
+            border: 2px solid currentColor;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .email-icon::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 8px solid currentColor;
+        }
+
+        /* Enhanced floating particles with variety */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(1px);
+        }
+
+        .particle:nth-child(1) {
+            width: 6px;
+            height: 6px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.2));
+            left: 15%;
+            animation: floatParticle1 8s infinite ease-in-out;
+        }
+
+        .particle:nth-child(2) {
+            width: 4px;
+            height: 4px;
+            background: radial-gradient(circle, rgba(255, 107, 157, 0.8), rgba(255, 107, 157, 0.2));
+            left: 35%;
+            animation: floatParticle2 10s infinite ease-in-out 1s;
+        }
+
+        .particle:nth-child(3) {
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, rgba(78, 205, 196, 0.8), rgba(78, 205, 196, 0.2));
+            left: 55%;
+            animation: floatParticle3 7s infinite ease-in-out 2s;
+        }
+
+        .particle:nth-child(4) {
+            width: 5px;
+            height: 5px;
+            background: radial-gradient(circle, rgba(69, 183, 209, 0.8), rgba(69, 183, 209, 0.2));
+            left: 75%;
+            animation: floatParticle4 9s infinite ease-in-out 0.5s;
+        }
+
+        .particle:nth-child(5) {
+            width: 7px;
+            height: 7px;
+            background: radial-gradient(circle, rgba(150, 206, 180, 0.8), rgba(150, 206, 180, 0.2));
+            left: 25%;
+            animation: floatParticle5 11s infinite ease-in-out 3s;
+        }
+
+        /* Additional decorative elements */
+        .glow-orb {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+            top: 20%;
+            left: 10%;
+            animation: orbFloat 15s infinite linear;
+            pointer-events: none;
+        }
+
+        .glow-orb:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 15%;
+            background: radial-gradient(circle, rgba(255, 107, 157, 0.03) 0%, transparent 70%);
+            animation: orbFloat 12s infinite linear reverse;
+        }
+
+        /* Keyframe animations */
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes backgroundPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+
+        @keyframes logoEntrance {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px) rotateY(-45deg) scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotateY(0deg) scale(1);
+            }
+        }
+
+        @keyframes textEntrance {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) rotateX(90deg);
+                filter: blur(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotateX(0deg);
+                filter: blur(0px);
+            }
+        }
+
+        @keyframes socialEntrance {
+            0% {
+                opacity: 0;
+                transform: translateY(40px) scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes movingLight {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        @keyframes lightBeam {
+            0% {
+                left: -50px;
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                left: calc(100% + 50px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes letterGlow {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.3;
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes subtitleEntrance {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) rotateX(90deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotateX(0deg);
+            }
+        }
+
+        @keyframes subtitleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes floatParticle1 {
+            0%, 100% {
+                transform: translateY(100vh) translateX(0px) rotate(0deg);
+                opacity: 0;
+            }
+            10%, 90% {
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-20px) translateX(20px) rotate(180deg);
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes floatParticle2 {
+            0%, 100% {
+                transform: translateY(100vh) translateX(0px) rotate(0deg) scale(1);
+                opacity: 0;
+            }
+            10%, 90% {
+                opacity: 0.8;
+            }
+            50% {
+                transform: translateY(-30px) translateX(-30px) rotate(270deg) scale(1.5);
+                opacity: 1;
+            }
+        }
+
+        @keyframes floatParticle3 {
+            0%, 100% {
+                transform: translateY(100vh) translateX(0px) rotate(0deg);
+                opacity: 0;
+            }
+            15%, 85% {
+                opacity: 0.9;
+            }
+            50% {
+                transform: translateY(-40px) translateX(40px) rotate(360deg);
+                opacity: 0.6;
+            }
+        }
+
+        @keyframes floatParticle4 {
+            0%, 100% {
+                transform: translateY(100vh) translateX(0px) rotate(0deg) scale(1);
+                opacity: 0;
+            }
+            20%, 80% {
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateY(-25px) translateX(-15px) rotate(180deg) scale(0.8);
+                opacity: 1;
+            }
+        }
+
+        @keyframes floatParticle5 {
+            0%, 100% {
+                transform: translateY(100vh) translateX(0px) rotate(0deg);
+                opacity: 0;
+            }
+            5%, 95% {
+                opacity: 0.8;
+            }
+            50% {
+                transform: translateY(-35px) translateX(25px) rotate(270deg);
+                opacity: 0.4;
+            }
+        }
+
+        @keyframes orbFloat {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            33% {
+                transform: translate(30px, -30px) rotate(120deg);
+            }
+            66% {
+                transform: translate(-20px, 20px) rotate(240deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+
+        /* Interactive hover effects for the main content */
+        .container:hover .coming-soon {
+            transform: scale(1.02);
+        }
+
+        .container:hover .subtitle {
+            color: #ff6b9d;
+            text-shadow: 0 0 20px rgba(255, 107, 157, 0.5);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .logo {
+                width: 100px;
+                margin-bottom: 30px;
+            }
+
+            .coming-soon {
+                font-size: 2.5rem;
+                letter-spacing: 4px;
+                margin-bottom: 15px;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+                letter-spacing: 2px;
+            }
+
+            .social-links {
+                gap: 20px;
+            }
+
+            .social-link {
+                width: 50px;
+                height: 50px;
+            }
+
+            .social-icon {
+                width: 24px;
+                height: 24px;
+            }
+
+            .glow-orb {
+                width: 150px;
+                height: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .coming-soon {
+                font-size: 2rem;
+                letter-spacing: 2px;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+                letter-spacing: 1px;
+            }
+
+            .social-text {
+                font-size: 0.95rem;
+            }
+
+            .social-links {
+                gap: 15px;
+            }
+
+            .social-link {
+                width: 45px;
+                height: 45px;
+            }
+
+            .social-icon {
+                width: 20px;
+                height: 20px;
+            }
+
+            .glow-orb {
+                width: 100px;
+                height: 100px;
+            }
+        }
+
+        /* Loading animation for the entire page */
+        @keyframes pageLoad {
+            0% {
+                opacity: 0;
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        body {
+            animation: pageLoad 1s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Enhanced floating particles -->
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+
+    <!-- Floating orbs for ambient lighting -->
+    <div class="glow-orb"></div>
+    <div class="glow-orb"></div>
+
+    <div class="container">
+        <img src="./Images/TCB logo.png" alt="Logo" class="logo">
+        <h1 class="coming-soon">
+            <span class="letter">C</span>
+            <span class="letter">O</span>
+            <span class="letter">M</span>
+            <span class="letter">I</span>
+            <span class="letter">N</span>
+            <span class="letter">G</span>
+            <span class="letter"> </span>
+            <span class="letter">S</span>
+            <span class="letter">O</span>
+            <span class="letter">O</span>
+            <span class="letter">N</span>
+        </h1>
+        <p class="subtitle">Something amazing is on the way</p>
+        
+        <div class="social-section">
+            <p class="social-text">Reach out to us on our social media while you wait</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/thechofibox?igsh=MW53NWJiczU4MXp2Mg==" class="social-link instagram" aria-label="Follow us on Instagram" target="_blank" rel="noopener noreferrer">
+                    <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </a>
+                <a href="https://www.tiktok.com/@thechofibox?_t=ZM-8zVXWyM7nL3&_r=1" class="social-link tiktok" aria-label="Follow us on TikTok" target="_blank" rel="noopener noreferrer">
+                    <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+                    </svg>
+                </a>
+                <a href="mailto:thechofibox@gmail.com" class="social-link email" aria-label="Send us an email">
+                    <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
